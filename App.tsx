@@ -10,7 +10,7 @@ import AppLoading from 'expo-app-loading'
 import { useFonts } from 'expo-font'
 import { ThemeProvider } from 'styled-components/native'
 
-import { Home } from './src/Home'
+import { Home } from './src/screens/Home'
 import { theme } from './src/styles/theme'
 
 export default function App(): JSX.Element {
