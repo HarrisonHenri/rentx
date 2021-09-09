@@ -8,8 +8,8 @@ export const theme = {
       },
       success: '#03B252',
       shape: {
-        dark: '#E1E1E8',
-        main: '#29292E',
+        main: '#E1E1E8',
+        dark: '#29292E',
       },
     },
     primary: {
