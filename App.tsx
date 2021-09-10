@@ -11,6 +11,7 @@ import { useFonts } from 'expo-font'
 import { ThemeProvider } from 'styled-components/native'
 
 import { CarDetails } from './src/screens/CarDetails'
+import Rental from './src/screens/Rental'
 import { theme } from './src/styles/theme'
 
 export default function App(): JSX.Element {
@@ -28,7 +29,7 @@ export default function App(): JSX.Element {
 
   return (
     <ThemeProvider theme={theme}>
-      <CarDetails />
+      <Rental />
     </ThemeProvider>
   )
 }
