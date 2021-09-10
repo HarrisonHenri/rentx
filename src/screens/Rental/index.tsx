@@ -4,8 +4,8 @@ import { StatusBar } from 'react-native'
 import { useTheme } from 'styled-components'
 
 import ArrowSvg from '../../assets/arrow.svg'
-import BackButton from '../../components/BackButton'
-import Button from '../../components/Button'
+import { BackButton } from '../../components/BackButton'
+import { Button } from '../../components/Button'
 import { Calendar } from '../../components/Calendar'
 import {
   Container,
@@ -48,7 +48,7 @@ const Rental: React.FC = () => {
           <ArrowSvg />
 
           <DateInfo>
-            <DateTitle>DE</DateTitle>
+            <DateTitle>ATÉ</DateTitle>
             <DateValue selected={false}>18/06/2021</DateValue>
           </DateInfo>
         </RentalPeriod>
@@ -65,4 +65,4 @@ const Rental: React.FC = () => {
   )
 }
 
-export default Rental
+export { Rental }

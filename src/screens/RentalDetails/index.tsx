@@ -1,5 +1,9 @@
 import React from 'react'
 
+import { Feather } from '@expo/vector-icons'
+import { RFValue } from 'react-native-responsive-fontsize'
+import { useTheme } from 'styled-components'
+
 import AccelerationSvg from '../../assets/acceleration.svg'
 import ExchangeSvg from '../../assets/exchange.svg'
 import ForceSvg from '../../assets/force.svg'
@@ -22,12 +26,23 @@ import {
   Rent,
   Price,
   Period,
-  About,
+  DateInfo,
+  DateTitle,
+  DateValue,
+  RentalPeriod,
+  CalendarIcon,
   Accessories,
   Footer,
+  RentalPrice,
+  RentalPriceLabel,
+  RentalPriceDetails,
+  RentalPriceQuota,
+  RentalPriceTotal,
 } from './styles'
 
-const CarDetails: React.FC = () => {
+const RentalDetails: React.FC = () => {
+  const theme = useTheme()
+
   return (
     <Container>
       <Header>
@@ -64,13 +79,41 @@ const CarDetails: React.FC = () => {
           <Accessory name="2 pessoas" icon={PeopleSvg} />
         </Accessories>
 
-        <About>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia,
-          autem maiores. Excepturi doloremque mollitia temporibus adipisci
-          cumque quae, beatae voluptas, reiciendis quas natus incidunt quam ex,
-          amet nulla animi hic.
-        </About>
+        <RentalPeriod>
+          <CalendarIcon>
+            <Feather
+              name="calendar"
+              size={RFValue(24)}
+              color={theme.colors.additionalColors.shape.main}
+            />
+          </CalendarIcon>
+
+          <DateInfo>
+            <DateTitle>DE</DateTitle>
+            <DateValue>18/06/2021</DateValue>
+          </DateInfo>
+
+          <Feather
+            name="chevron-right"
+            size={RFValue(10)}
+            color={theme.fonts.colors.text}
+          />
+
+          <DateInfo>
+            <DateTitle>ATÉ</DateTitle>
+            <DateValue>18/06/2021</DateValue>
+          </DateInfo>
+        </RentalPeriod>
+
+        <RentalPrice>
+          <RentalPriceLabel>TOTAL</RentalPriceLabel>
+          <RentalPriceDetails>
+            <RentalPriceQuota>R$ 580 x3 diárias</RentalPriceQuota>
+            <RentalPriceTotal>R$ 2.900</RentalPriceTotal>
+          </RentalPriceDetails>
+        </RentalPrice>
       </Content>
+
       <Footer>
         <Button title="Confirmar" onPress={() => {}} />
       </Footer>
@@ -78,4 +121,4 @@ const CarDetails: React.FC = () => {
   )
 }
 
-export { CarDetails }
+export { RentalDetails }

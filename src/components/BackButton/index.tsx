@@ -24,4 +24,4 @@ const BackButton: React.FC<Props> = ({ color, ...rest }) => {
   )
 }
 
-export default BackButton
+export { BackButton }
