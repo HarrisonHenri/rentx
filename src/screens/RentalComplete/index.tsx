@@ -37,7 +37,7 @@ const RentalComplete: React.FC = () => {
         </Message>
       </Content>
       <Footer>
-        <ConfirmButton title="OK" />
+        <ConfirmButton title="OK" onPress={handleRentalCompleteNav} />
       </Footer>
     </Container>
   )
