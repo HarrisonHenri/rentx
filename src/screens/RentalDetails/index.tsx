@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import { Feather } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 import { RFValue } from 'react-native-responsive-fontsize'
 import { useTheme } from 'styled-components'
 
@@ -42,6 +43,12 @@ import {
 
 const RentalDetails: React.FC = () => {
   const theme = useTheme()
+
+  const { navigate } = useNavigation()
+
+  const handleRentalCompleteNav = useCallback(() => {
+    navigate({ name: 'RentalComplete' as never, params: {} as never })
+  }, [navigate])
 
   return (
     <Container>
@@ -95,7 +102,7 @@ const RentalDetails: React.FC = () => {
 
           <Feather
             name="chevron-right"
-            size={RFValue(10)}
+            size={RFValue(12)}
             color={theme.fonts.colors.text}
           />
 
@@ -115,7 +122,11 @@ const RentalDetails: React.FC = () => {
       </Content>
 
       <Footer>
-        <Button title="Confirmar" onPress={() => {}} />
+        <Button
+          title="Alugar"
+          color={theme.colors.additionalColors.success}
+          onPress={handleRentalCompleteNav}
+        />
       </Footer>
     </Container>
   )

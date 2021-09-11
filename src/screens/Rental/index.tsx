@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { StatusBar } from 'react-native'
 
+import { useNavigation } from '@react-navigation/native'
 import { useTheme } from 'styled-components'
 
 import ArrowSvg from '../../assets/arrow.svg'
@@ -21,6 +22,12 @@ import {
 
 const Rental: React.FC = () => {
   const theme = useTheme()
+
+  const { navigate } = useNavigation()
+
+  const handleRentalDetailsNav = useCallback(() => {
+    navigate({ name: 'RentalDetails' as never, params: {} as never })
+  }, [navigate])
 
   return (
     <Container>
@@ -59,7 +66,7 @@ const Rental: React.FC = () => {
       </Content>
 
       <Footer>
-        <Button title="Confirmar" onPress={() => {}} />
+        <Button title="Confirmar" onPress={handleRentalDetailsNav} />
       </Footer>
     </Container>
   )

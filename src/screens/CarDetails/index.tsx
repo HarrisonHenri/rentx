@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useCallback } from 'react'
+
+import { useNavigation } from '@react-navigation/native'
 
 import AccelerationSvg from '../../assets/acceleration.svg'
 import ExchangeSvg from '../../assets/exchange.svg'
@@ -28,6 +30,12 @@ import {
 } from './styles'
 
 const CarDetails: React.FC = () => {
+  const { navigate } = useNavigation()
+
+  const handleRentalNav = useCallback(() => {
+    navigate({ name: 'Rental' as never, params: {} as never })
+  }, [navigate])
+
   return (
     <Container>
       <Header>
@@ -72,7 +80,7 @@ const CarDetails: React.FC = () => {
         </About>
       </Content>
       <Footer>
-        <Button title="Confirmar" onPress={() => {}} />
+        <Button title="Agende seu aluguel" onPress={handleRentalNav} />
       </Footer>
     </Container>
   )
