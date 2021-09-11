@@ -12,6 +12,7 @@ import { Accessory } from '../../components/Accessory'
 import { BackButton } from '../../components/BackButton'
 import { Button } from '../../components/Button'
 import { ImageSlider } from '../../components/ImageSlider'
+import { StackNavigationProps } from '../../routes/stack.routes.model'
 import {
   Container,
   Header,
@@ -30,10 +31,10 @@ import {
 } from './styles'
 
 const CarDetails: React.FC = () => {
-  const { navigate } = useNavigation()
+  const { navigate } = useNavigation<StackNavigationProps>()
 
   const handleRentalNav = useCallback(() => {
-    navigate({ name: 'Rental' as never, params: {} as never })
+    navigate('Rental')
   }, [navigate])
 
   return (

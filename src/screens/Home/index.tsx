@@ -6,13 +6,14 @@ import { RFValue } from 'react-native-responsive-fontsize'
 
 import Logo from '../../assets/logo.svg'
 import { Car } from '../../components/Car'
+import { StackNavigationProps } from '../../routes/stack.routes.model'
 import { Container, Header, TotalCars, HeaderContent, CarList } from './styles'
 
 const Home: React.FC = () => {
-  const { navigate } = useNavigation()
+  const { navigate } = useNavigation<StackNavigationProps>()
 
   const handleCarDetailsNav = useCallback(() => {
-    navigate({ name: 'CarDetails' as never, params: {} as never })
+    navigate('CarDetails')
   }, [navigate])
 
   return (

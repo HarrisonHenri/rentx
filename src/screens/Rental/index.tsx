@@ -8,6 +8,7 @@ import ArrowSvg from '../../assets/arrow.svg'
 import { BackButton } from '../../components/BackButton'
 import { Button } from '../../components/Button'
 import { Calendar } from '../../components/Calendar'
+import { StackNavigationProps } from '../../routes/stack.routes.model'
 import {
   Container,
   Header,
@@ -23,7 +24,7 @@ import {
 const Rental: React.FC = () => {
   const theme = useTheme()
 
-  const { navigate } = useNavigation()
+  const { navigate } = useNavigation<StackNavigationProps>()
 
   const handleRentalDetailsNav = useCallback(() => {
     navigate({ name: 'RentalDetails' as never, params: {} as never })

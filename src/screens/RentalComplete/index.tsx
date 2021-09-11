@@ -6,15 +6,16 @@ import { useNavigation } from '@react-navigation/native'
 import DoneSvg from '../../assets/done.svg'
 import LogoSvg from '../../assets/logo_background_gray.svg'
 import { ConfirmButton } from '../../components/ConfirmButton'
+import { StackNavigationProps } from '../../routes/stack.routes.model'
 import { Container, Content, Title, Message, Footer } from './styles'
 
 const RentalComplete: React.FC = () => {
   const { width } = useWindowDimensions()
 
-  const { navigate } = useNavigation()
+  const { navigate } = useNavigation<StackNavigationProps>()
 
   const handleRentalCompleteNav = useCallback(() => {
-    navigate({ name: 'Home' as never, params: {} as never })
+    navigate('Home')
   }, [navigate])
 
   return (

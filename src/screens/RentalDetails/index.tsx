@@ -15,6 +15,7 @@ import { Accessory } from '../../components/Accessory'
 import { BackButton } from '../../components/BackButton'
 import { Button } from '../../components/Button'
 import { ImageSlider } from '../../components/ImageSlider'
+import { StackNavigationProps } from '../../routes/stack.routes.model'
 import {
   Container,
   Header,
@@ -44,7 +45,7 @@ import {
 const RentalDetails: React.FC = () => {
   const theme = useTheme()
 
-  const { navigate } = useNavigation()
+  const { navigate } = useNavigation<StackNavigationProps>()
 
   const handleRentalCompleteNav = useCallback(() => {
     navigate({ name: 'RentalComplete' as never, params: {} as never })

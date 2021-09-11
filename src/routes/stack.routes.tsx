@@ -7,8 +7,9 @@ import { Home } from '../screens/Home'
 import { Rental } from '../screens/Rental'
 import { RentalComplete } from '../screens/RentalComplete'
 import { RentalDetails } from '../screens/RentalDetails'
+import { RootParamList } from './stack.routes.model'
 
-const { Navigator, Screen } = createStackNavigator()
+const { Navigator, Screen } = createStackNavigator<RootParamList>()
 
 const StackRoutes: React.FC = () => (
   <Navigator screenOptions={{ headerShown: false }}>
