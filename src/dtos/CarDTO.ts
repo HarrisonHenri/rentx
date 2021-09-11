@@ -4,5 +4,6 @@ export interface CarDTO {
   name: string
   daily_rate: number
   thumbnail?: string
-  specifications: [{ name: string; description: string }]
+  description?: string
+  specifications: [{ id: string; name: string; description: string }]
 }

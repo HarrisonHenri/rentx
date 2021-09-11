@@ -17,9 +17,12 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState(true)
   const { navigate } = useNavigation<StackNavigationProps>()
 
-  const handleCarDetailsNav = useCallback(() => {
-    navigate('CarDetails')
-  }, [navigate])
+  const handleCarDetailsNav = useCallback(
+    (car: CarDTO) => {
+      navigate('CarDetails', { car })
+    },
+    [navigate],
+  )
 
   useEffect(() => {
     async function fetchCars(): Promise<void> {
@@ -56,7 +59,10 @@ const Home: React.FC = () => {
         <CarList
           data={cars}
           renderItem={({ item }) => (
-            <Car data={item as CarDTO} onPress={handleCarDetailsNav} />
+            <Car
+              data={item as CarDTO}
+              onPress={() => handleCarDetailsNav(item as CarDTO)}
+            />
           )}
           keyExtractor={item => {
             return (item as CarDTO).id
