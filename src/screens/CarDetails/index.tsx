@@ -24,7 +24,6 @@ import {
   Name,
   Rent,
   Price,
-  Period,
   About,
   Accessories,
   Footer,
@@ -59,7 +58,6 @@ const CarDetails: React.FC = () => {
           </Description>
 
           <Rent>
-            <Period>Ao dia</Period>
             <Price>R$ 580</Price>
           </Rent>
         </Details>

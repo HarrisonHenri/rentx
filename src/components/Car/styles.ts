@@ -43,14 +43,6 @@ export const Rent = styled.View`
   margin-right: 24px;
 `
 
-export const Period = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.secondary[500]};
-  color: ${({ theme }) => theme.fonts.colors.detail};
-  font-size: ${RFValue(10)}px;
-
-  text-transform: uppercase;
-`
-
 export const Price = styled.Text`
   font-family: ${({ theme }) => theme.fonts.secondary[500]};
   color: ${({ theme }) => theme.colors.primary.main};
