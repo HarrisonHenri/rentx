@@ -1,19 +1,13 @@
 import React, { useCallback } from 'react'
 
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
-import AccelerationSvg from '../../assets/acceleration.svg'
-import ExchangeSvg from '../../assets/exchange.svg'
-import ForceSvg from '../../assets/force.svg'
-import GasolineSvg from '../../assets/gasoline.svg'
-import PeopleSvg from '../../assets/people.svg'
-import SpeedSvg from '../../assets/speed.svg'
 import { Accessory } from '../../components/Accessory'
 import { BackButton } from '../../components/BackButton'
 import { Button } from '../../components/Button'
 import { ImageSlider } from '../../components/ImageSlider'
 import {
-  RootParamList,
+  RootParams,
   StackNavigationProps,
 } from '../../routes/stack.routes.model'
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon'
@@ -35,11 +29,13 @@ import {
 
 const CarDetails: React.FC = () => {
   const { navigate, goBack } = useNavigation<StackNavigationProps>()
-  const { params } = useRoute<RouteProp<RootParamList, 'CarDetails'>>()
+  const route = useRoute<RootParams<'CarDetails'>>()
+  const { car } = route.params
 
   const handleRentalNav = useCallback(() => {
-    navigate('Rental')
-  }, [navigate])
+    navigate('Rental', { car })
+  }, [navigate, car])
+
   const handleGoBack = useCallback(() => {
     goBack()
   }, [goBack])
@@ -61,17 +57,17 @@ const CarDetails: React.FC = () => {
       <Content>
         <Details>
           <Description>
-            <Brand>{params.car.brand}</Brand>
-            <Name>{params.car.name}</Name>
+            <Brand>{car.brand}</Brand>
+            <Name>{car.name}</Name>
           </Description>
 
           <Rent>
-            <Price>{`R$ ${params.car.daily_rate}`}</Price>
+            <Price>{`R$ ${car.daily_rate}`}</Price>
           </Rent>
         </Details>
 
         <Accessories>
-          {params.car.specifications.map(({ id, name, description }) => (
+          {car?.specifications?.map(({ id, name, description }) => (
             <Accessory
               key={id}
               name={name}
@@ -80,7 +76,7 @@ const CarDetails: React.FC = () => {
           ))}
         </Accessories>
 
-        <About>{params.car.description}</About>
+        <About>{car.description}</About>
       </Content>
       <Footer>
         <Button title="Agende seu aluguel" onPress={handleRentalNav} />

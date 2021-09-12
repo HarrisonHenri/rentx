@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { StatusBar } from 'react-native'
 
+import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import { RFValue } from 'react-native-responsive-fontsize'
+import { useTheme } from 'styled-components'
 
 import Logo from '../../assets/logo.svg'
 import { Car } from '../../components/Car'
@@ -10,11 +12,19 @@ import { Load } from '../../components/Load'
 import { CarDTO } from '../../dtos/CarDTO'
 import { StackNavigationProps } from '../../routes/stack.routes.model'
 import { api } from '../../services/api'
-import { Container, Header, TotalCars, HeaderContent, CarList } from './styles'
+import {
+  Container,
+  Header,
+  TotalCars,
+  HeaderContent,
+  CarList,
+  UserRentals,
+} from './styles'
 
 const Home: React.FC = () => {
   const [cars, setCars] = useState<CarDTO[]>([])
   const [loading, setLoading] = useState(true)
+  const theme = useTheme()
   const { navigate } = useNavigation<StackNavigationProps>()
 
   const handleCarDetailsNav = useCallback(
@@ -23,6 +33,10 @@ const Home: React.FC = () => {
     },
     [navigate],
   )
+
+  const handleUserRentals = useCallback(() => {
+    navigate('UserRentals')
+  }, [navigate])
 
   useEffect(() => {
     async function fetchCars(): Promise<void> {
@@ -69,6 +83,13 @@ const Home: React.FC = () => {
           }}
         />
       )}
+      <UserRentals onPress={handleUserRentals}>
+        <Ionicons
+          name="ios-car-sport"
+          size={32}
+          color={theme.colors.additionalColors.shape.main}
+        />
+      </UserRentals>
     </Container>
   )
 }

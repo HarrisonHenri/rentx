@@ -1,21 +1,21 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
+import { Alert } from 'react-native'
 
 import { Feather } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { RFValue } from 'react-native-responsive-fontsize'
 import { useTheme } from 'styled-components'
 
-import AccelerationSvg from '../../assets/acceleration.svg'
-import ExchangeSvg from '../../assets/exchange.svg'
-import ForceSvg from '../../assets/force.svg'
-import GasolineSvg from '../../assets/gasoline.svg'
-import PeopleSvg from '../../assets/people.svg'
-import SpeedSvg from '../../assets/speed.svg'
 import { Accessory } from '../../components/Accessory'
 import { BackButton } from '../../components/BackButton'
 import { Button } from '../../components/Button'
 import { ImageSlider } from '../../components/ImageSlider'
-import { StackNavigationProps } from '../../routes/stack.routes.model'
+import {
+  RootParams,
+  StackNavigationProps,
+} from '../../routes/stack.routes.model'
+import { api } from '../../services/api'
+import { getAccessoryIcon } from '../../utils/getAccessoryIcon'
 import {
   Container,
   Header,
@@ -43,17 +43,36 @@ import {
 
 const RentalDetails: React.FC = () => {
   const theme = useTheme()
+  const route = useRoute<RootParams<'RentalDetails'>>()
+  const { car, rentalPeriod, dailys, expectedReturnDate } = route.params
+  const rentTotal = Number(car.daily_rate) * dailys
+  const [loading, setLoading] = useState(false)
 
-  const { navigate } = useNavigation<StackNavigationProps>()
+  const { navigate, goBack } = useNavigation<StackNavigationProps>()
 
-  const handleRentalCompleteNav = useCallback(() => {
-    navigate({ name: 'RentalComplete' as never, params: {} as never })
-  }, [navigate])
+  const handleRentalComplete = useCallback(async () => {
+    setLoading(true)
+    try {
+      await api.post('/rentals', {
+        car_id: car.id,
+        expected_return_date: new Date(expectedReturnDate),
+      })
+
+      navigate('RentalComplete')
+    } catch (error) {
+      setLoading(false)
+      Alert.alert('Ocorreu um erro ao agendar o seu aluguel. Tente novamente.')
+    }
+  }, [navigate, car, expectedReturnDate])
+
+  const handleGoBack = useCallback(() => {
+    goBack()
+  }, [goBack])
 
   return (
     <Container>
       <Header>
-        <BackButton onPress={() => {}} />
+        <BackButton onPress={handleGoBack} />
       </Header>
 
       <CarImages>
@@ -67,22 +86,23 @@ const RentalDetails: React.FC = () => {
       <Content>
         <Details>
           <Description>
-            <Brand>Lamborghini</Brand>
-            <Name>Huracan</Name>
+            <Brand>{car.brand}</Brand>
+            <Name>{car.name}</Name>
           </Description>
 
           <Rent>
-            <Price>R$ 580</Price>
+            <Price>{`R$ ${car.daily_rate}`}</Price>
           </Rent>
         </Details>
 
         <Accessories>
-          <Accessory name="380 km/h" icon={SpeedSvg} />
-          <Accessory name="3.2 s" icon={AccelerationSvg} />
-          <Accessory name="800 HP" icon={ForceSvg} />
-          <Accessory name="Gasolina" icon={GasolineSvg} />
-          <Accessory name="Auto" icon={ExchangeSvg} />
-          <Accessory name="2 pessoas" icon={PeopleSvg} />
+          {car?.specifications?.map(({ id, name, description }) => (
+            <Accessory
+              key={id}
+              name={name}
+              icon={getAccessoryIcon(description)}
+            />
+          ))}
         </Accessories>
 
         <RentalPeriod>
@@ -96,7 +116,7 @@ const RentalDetails: React.FC = () => {
 
           <DateInfo>
             <DateTitle>DE</DateTitle>
-            <DateValue>18/06/2021</DateValue>
+            <DateValue>{rentalPeriod.startFormatted}</DateValue>
           </DateInfo>
 
           <Feather
@@ -107,15 +127,15 @@ const RentalDetails: React.FC = () => {
 
           <DateInfo>
             <DateTitle>ATÉ</DateTitle>
-            <DateValue>18/06/2021</DateValue>
+            <DateValue>{rentalPeriod.endFormatted}</DateValue>
           </DateInfo>
         </RentalPeriod>
 
         <RentalPrice>
           <RentalPriceLabel>TOTAL</RentalPriceLabel>
           <RentalPriceDetails>
-            <RentalPriceQuota>R$ 580 x3 diárias</RentalPriceQuota>
-            <RentalPriceTotal>R$ 2.900</RentalPriceTotal>
+            <RentalPriceQuota>{`R$ ${car.daily_rate} x${dailys} diárias`}</RentalPriceQuota>
+            <RentalPriceTotal>{`R$ ${rentTotal}`}</RentalPriceTotal>
           </RentalPriceDetails>
         </RentalPrice>
       </Content>
@@ -124,7 +144,9 @@ const RentalDetails: React.FC = () => {
         <Button
           title="Alugar"
           color={theme.colors.additionalColors.success}
-          onPress={handleRentalCompleteNav}
+          onPress={handleRentalComplete}
+          enabled={!loading}
+          loading={loading}
         />
       </Footer>
     </Container>

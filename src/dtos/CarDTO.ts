@@ -5,5 +5,5 @@ export interface CarDTO {
   daily_rate: number
   thumbnail?: string
   description?: string
-  specifications: [{ id: string; name: string; description: string }]
+  specifications?: [{ id: string; name: string; description: string }]
 }

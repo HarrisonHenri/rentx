@@ -7,6 +7,7 @@ import { Home } from '../screens/Home'
 import { Rental } from '../screens/Rental'
 import { RentalComplete } from '../screens/RentalComplete'
 import { RentalDetails } from '../screens/RentalDetails'
+import { UserRentals } from '../screens/UserRentals'
 import { RootParamList } from './stack.routes.model'
 
 const { Navigator, Screen } = createStackNavigator<RootParamList>()
@@ -18,6 +19,7 @@ const StackRoutes: React.FC = () => (
     <Screen name="Rental" component={Rental} />
     <Screen name="RentalDetails" component={RentalDetails} />
     <Screen name="RentalComplete" component={RentalComplete} />
+    <Screen name="UserRentals" component={UserRentals} />
   </Navigator>
 )
 

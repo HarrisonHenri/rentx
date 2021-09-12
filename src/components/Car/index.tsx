@@ -2,7 +2,6 @@ import React from 'react'
 
 import { RectButtonProps } from 'react-native-gesture-handler'
 
-import GasolineSvg from '../../assets/gasoline.svg'
 import { CarDTO } from '../../dtos/CarDTO'
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon'
 import {
@@ -22,14 +21,15 @@ interface Props extends RectButtonProps {
 }
 
 const Car: React.FC<Props> = ({ data, ...rest }) => {
-  const motor = data.specifications.find(
-    specification =>
-      specification.description === 'eletric_motor' ||
-      specification.description === 'gasoline_motor' ||
-      specification.description === 'hybrid_motor',
-  )
+  const motor =
+    data.specifications?.find(
+      specification =>
+        specification.description === 'eletric_motor' ||
+        specification.description === 'gasoline_motor' ||
+        specification.description === 'hybrid_motor',
+    )?.description ?? 'eletric_motor'
 
-  const MotorIcon = getAccessoryIcon(motor?.description as string)
+  const MotorIcon = getAccessoryIcon(motor)
 
   return (
     <Container {...rest}>
