@@ -11,8 +11,6 @@ import { useFonts } from 'expo-font'
 import { ThemeProvider } from 'styled-components/native'
 
 import Routes from './src/routes'
-import { RentalComplete } from './src/screens/RentalComplete'
-import { RentalDetails } from './src/screens/RentalDetails'
 import { theme } from './src/styles/theme'
 
 export default function App(): JSX.Element {

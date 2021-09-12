@@ -1,4 +1,7 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
+import { ViewToken } from 'react-native'
+
+import { FlatList } from 'react-native-gesture-handler'
 
 import {
   Container,
@@ -12,19 +15,37 @@ interface Props {
   imagesUrl: string[]
 }
 
+interface ChangeImageInfo {
+  viewableItems: ViewToken[]
+}
+
 const ImageSlider: React.FC<Props> = ({ imagesUrl }) => {
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  const hadleImageChange = useRef((info: ChangeImageInfo) => {
+    setActiveIndex(info.viewableItems[0].index as number)
+  })
+
   return (
     <Container>
       <ImageIndexes>
-        <ImageIndex active />
-        <ImageIndex active={false} />
-        <ImageIndex active={false} />
-        <ImageIndex active={false} />
+        {imagesUrl.map((_, index) => (
+          <ImageIndex key={String(index)} active={index === activeIndex} />
+        ))}
       </ImageIndexes>
 
-      <CarImageWrapper>
-        <CarImage source={{ uri: imagesUrl[0] }} resizeMode="contain" />
-      </CarImageWrapper>
+      <FlatList
+        data={imagesUrl}
+        keyExtractor={item => item}
+        renderItem={({ item }) => (
+          <CarImageWrapper>
+            <CarImage source={{ uri: item }} resizeMode="contain" />
+          </CarImageWrapper>
+        )}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        onViewableItemsChanged={hadleImageChange.current}
+      />
     </Container>
   )
 }

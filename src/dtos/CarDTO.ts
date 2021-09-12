@@ -6,4 +6,5 @@ export interface CarDTO {
   thumbnail?: string
   description?: string
   specifications?: [{ id: string; name: string; description: string }]
+  images: [{ id: string; image_name: string }]
 }
