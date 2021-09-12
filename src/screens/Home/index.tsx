@@ -61,27 +61,29 @@ const Home: React.FC = () => {
         backgroundColor="transparent"
         translucent
       />
-      <Header>
-        <HeaderContent>
-          <Logo width={RFValue(100)} height={RFValue(12)} />
-          <TotalCars>Total de 12 carros</TotalCars>
-        </HeaderContent>
-      </Header>
       {loading ? (
         <Load />
       ) : (
-        <CarList
-          data={cars}
-          renderItem={({ item }) => (
-            <Car
-              data={item as CarDTO}
-              onPress={() => handleCarDetailsNav(item as CarDTO)}
-            />
-          )}
-          keyExtractor={item => {
-            return (item as CarDTO).id
-          }}
-        />
+        <>
+          <Header>
+            <HeaderContent>
+              <Logo width={RFValue(100)} height={RFValue(12)} />
+              <TotalCars>{`Total de ${cars.length} carros`}</TotalCars>
+            </HeaderContent>
+          </Header>
+          <CarList
+            data={cars}
+            renderItem={({ item }) => (
+              <Car
+                data={item as CarDTO}
+                onPress={() => handleCarDetailsNav(item as CarDTO)}
+              />
+            )}
+            keyExtractor={item => {
+              return (item as CarDTO).id
+            }}
+          />
+        </>
       )}
       <UserRentals onPress={handleUserRentals}>
         <Ionicons
