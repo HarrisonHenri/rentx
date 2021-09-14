@@ -15,6 +15,7 @@ export type RootParamList = {
   }
   RentalComplete: undefined
   UserRentals: undefined
+  Splash: undefined
 }
 
 export type RootParams<Route extends keyof RootParamList> = RouteProp<

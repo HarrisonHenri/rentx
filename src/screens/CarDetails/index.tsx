@@ -1,6 +1,16 @@
 import React, { useCallback } from 'react'
+import { StatusBar, StyleSheet } from 'react-native'
 
 import { useNavigation, useRoute } from '@react-navigation/native'
+import { getStatusBarHeight } from 'react-native-iphone-x-helper'
+import Animated, {
+  Extrapolate,
+  interpolate,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated'
+import { useTheme } from 'styled-components'
 
 import { Accessory } from '../../components/Accessory'
 import { BackButton } from '../../components/BackButton'
@@ -16,7 +26,6 @@ import {
   Container,
   Header,
   CarImages,
-  Content,
   Details,
   Description,
   Brand,
@@ -35,6 +44,17 @@ const CarDetails: React.FC = () => {
   const carImages = car.images.map(
     ({ image_name }) => `${config.API_URL}/${image_name}`,
   )
+  const theme = useTheme()
+  const scrollY = useSharedValue(0)
+  const scrollHandler = useAnimatedScrollHandler(event => {
+    scrollY.value = event.contentOffset.y
+  })
+  const headerStyleAnimation = useAnimatedStyle(() => ({
+    height: interpolate(scrollY.value, [0, 200], [200, 70], Extrapolate.CLAMP),
+  }))
+  const sliderCarsStyleAnimation = useAnimatedStyle(() => ({
+    opacity: interpolate(scrollY.value, [0, 150], [1, 0], Extrapolate.CLAMP),
+  }))
 
   const handleRentalNav = useCallback(() => {
     navigate('Rental', { car })
@@ -46,15 +66,41 @@ const CarDetails: React.FC = () => {
 
   return (
     <Container>
-      <Header>
-        <BackButton onPress={handleGoBack} />
-      </Header>
+      <StatusBar
+        barStyle="dark-content"
+        translucent
+        backgroundColor="transparent"
+      />
 
-      <CarImages>
-        <ImageSlider imagesUrl={carImages} />
-      </CarImages>
+      <Animated.View
+        style={[
+          headerStyleAnimation,
+          styles.header,
+          {
+            backgroundColor: theme.colors.additionalColors.background.secondary,
+          },
+        ]}
+      >
+        <Header>
+          <BackButton onPress={handleGoBack} />
+        </Header>
 
-      <Content>
+        <Animated.View style={[sliderCarsStyleAnimation]}>
+          <CarImages>
+            <ImageSlider imagesUrl={carImages} />
+          </CarImages>
+        </Animated.View>
+      </Animated.View>
+
+      <Animated.ScrollView
+        contentContainerStyle={{
+          paddingHorizontal: 24,
+          paddingTop: getStatusBarHeight() + 160,
+        }}
+        showsVerticalScrollIndicator={false}
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
+      >
         <Details>
           <Description>
             <Brand>{car.brand}</Brand>
@@ -77,7 +123,7 @@ const CarDetails: React.FC = () => {
         </Accessories>
 
         <About>{car.description}</About>
-      </Content>
+      </Animated.ScrollView>
       <Footer>
         <Button title="Agende seu aluguel" onPress={handleRentalNav} />
       </Footer>
@@ -86,3 +132,11 @@ const CarDetails: React.FC = () => {
 }
 
 export { CarDetails }
+
+const styles = StyleSheet.create({
+  header: {
+    position: 'absolute',
+    overflow: 'hidden',
+    zIndex: 1,
+  },
+})

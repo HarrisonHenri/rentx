@@ -32,16 +32,3 @@ export const CarList = styled.FlatList.attrs({
   contentContainerStyle: { padding: 24 },
   showsVerticalScrollIndicator: false,
 })``
-
-export const UserRentals = styled(RectButton)`
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
-  align-items: center;
-  justify-content: center;
-
-  background-color: ${({ theme }) => theme.colors.primary.main};
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-`

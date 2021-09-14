@@ -1,17 +1,21 @@
 import React from 'react'
-import { ActivityIndicator } from 'react-native'
 
-import { useTheme } from 'styled-components'
+import LottieView from 'lottie-react-native'
+
+import LoadAnimation from '../../assets/load.json'
+import { Container } from './styles'
 
 const Load: React.FC = () => {
-  const theme = useTheme()
-
   return (
-    <ActivityIndicator
-      color={theme.colors.primary.main}
-      size="large"
-      style={{ flex: 1 }}
-    />
+    <Container>
+      <LottieView
+        source={LoadAnimation}
+        autoPlay
+        style={{ height: 100 }}
+        resizeMode="contain"
+        loop
+      />
+    </Container>
   )
 }
 export { Load }
