@@ -10,6 +10,7 @@ interface Props extends RectButtonProps {
   title: string
   color?: string
   loading?: boolean
+  light?: boolean
 }
 
 const Button: React.FC<Props> = ({
@@ -17,6 +18,7 @@ const Button: React.FC<Props> = ({
   color,
   loading = false,
   enabled = true,
+  light = false,
   ...rest
 }) => {
   const theme = useTheme()
@@ -28,7 +30,7 @@ const Button: React.FC<Props> = ({
       style={{ opacity: enabled && !loading ? 1 : 0.5 }}
     >
       {!loading ? (
-        <Title>{title}</Title>
+        <Title light={light}>{title}</Title>
       ) : (
         <ActivityIndicator
           size="large"

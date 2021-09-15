@@ -3,13 +3,8 @@ import { ViewToken } from 'react-native'
 
 import { FlatList } from 'react-native-gesture-handler'
 
-import {
-  Container,
-  ImageIndexes,
-  ImageIndex,
-  CarImageWrapper,
-  CarImage,
-} from './styles'
+import { BulletPoint } from '../BulletPoint'
+import { Container, ImageIndexes, CarImageWrapper, CarImage } from './styles'
 
 interface Props {
   imagesUrl: string[]
@@ -30,7 +25,7 @@ const ImageSlider: React.FC<Props> = ({ imagesUrl }) => {
     <Container>
       <ImageIndexes>
         {imagesUrl.map((_, index) => (
-          <ImageIndex key={String(index)} active={index === activeIndex} />
+          <BulletPoint key={String(index)} active={index === activeIndex} />
         ))}
       </ImageIndexes>
 

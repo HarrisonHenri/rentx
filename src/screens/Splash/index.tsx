@@ -52,7 +52,7 @@ const Splash: React.FC = () => {
   })
 
   const startApp = useCallback(() => {
-    dispatch(StackActions.replace('Home'))
+    dispatch(StackActions.replace('SignIn'))
   }, [dispatch])
 
   useEffect(() => {

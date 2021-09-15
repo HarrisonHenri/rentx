@@ -10,6 +10,7 @@ import AppLoading from 'expo-app-loading'
 import { useFonts } from 'expo-font'
 import { ThemeProvider } from 'styled-components/native'
 
+import { AppProvider } from './src/hooks'
 import Routes from './src/routes'
 import { theme } from './src/styles/theme'
 
@@ -28,7 +29,9 @@ export default function App(): JSX.Element {
 
   return (
     <ThemeProvider theme={theme}>
-      <Routes />
+      <AppProvider>
+        <Routes />
+      </AppProvider>
     </ThemeProvider>
   )
 }

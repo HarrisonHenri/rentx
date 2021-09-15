@@ -1,22 +1,27 @@
 import React, { useCallback } from 'react'
 import { StatusBar, useWindowDimensions } from 'react-native'
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 import DoneSvg from '../../assets/done.svg'
 import LogoSvg from '../../assets/logo_background_gray.svg'
 import { ConfirmButton } from '../../components/ConfirmButton'
-import { StackNavigationProps } from '../../routes/stack.routes.model'
+import {
+  RootParams,
+  StackNavigationProps,
+} from '../../routes/stack.routes.model'
 import { Container, Content, Title, Message, Footer } from './styles'
 
-const RentalComplete: React.FC = () => {
+const Confirmation: React.FC = () => {
   const { width } = useWindowDimensions()
+  const route = useRoute<RootParams<'Confirmation'>>()
+  const { title, message, nextScreen } = route.params
 
   const { navigate } = useNavigation<StackNavigationProps>()
 
   const handleRentalCompleteNav = useCallback(() => {
-    navigate('Home')
-  }, [navigate])
+    navigate(nextScreen)
+  }, [navigate, nextScreen])
 
   return (
     <Container>
@@ -28,14 +33,9 @@ const RentalComplete: React.FC = () => {
       <LogoSvg width={width} />
       <Content>
         <DoneSvg width={80} height={80} />
-        <Title>Carro alugado!</Title>
+        <Title>{title}</Title>
 
-        <Message>
-          Agora você só precisa ir{'\n'}
-          até a concessionária da RENTX
-          {'\n'}
-          pagar o seu automóvel.
-        </Message>
+        <Message>{message}</Message>
       </Content>
       <Footer>
         <ConfirmButton title="OK" onPress={handleRentalCompleteNav} />
@@ -44,4 +44,4 @@ const RentalComplete: React.FC = () => {
   )
 }
 
-export { RentalComplete }
+export { Confirmation }

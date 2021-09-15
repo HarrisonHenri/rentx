@@ -58,7 +58,12 @@ const RentalDetails: React.FC = () => {
         expected_return_date: new Date(expectedReturnDate),
       })
 
-      navigate('RentalComplete')
+      navigate('Confirmation', {
+        title: 'Carro alugado!',
+        message:
+          'Agora você só precisa ir\naté a concessionária da RENTX\npegar o seu automóvel.',
+        nextScreen: 'Home',
+      })
     } catch (error) {
       setLoading(false)
       Alert.alert('Ocorreu um erro ao agendar o seu aluguel. Tente novamente.')

@@ -6,9 +6,22 @@ const api = axios.create({
   baseURL: config.API_URL,
 })
 
-const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzE0MjExOTIsImV4cCI6MTYzMTQyMjA5Miwic3ViIjoiNzk4NzljNTMtOWZmMC00NmY2LTk3M2MtMDkwNmJhZDZjNzkzIn0.HDybFYMmp6iSM1PlXYNXT0EZq2NcrkaCDg6jBaxA7eg'
+// api.interceptors.response.use(
+//   response => {
+//     return response
+//   },
+//   async function (error) {
+//     const access_token = localStorage.getItem('access_token')
+//     const refresh_token = localStorage.getItem('refresh_token')
+//     if (error.response.status === 401 && access_token) {
+//       const response = await api.post('/refresh-token', {
+//         token: refresh_token,
+//       })
 
-api.defaults.headers.Authorization = `Bearer ${token}`
+//       return response
+//     }
+//     return Promise.reject(error)
+//   },
+// )
 
 export { api }
