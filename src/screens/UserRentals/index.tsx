@@ -10,7 +10,6 @@ import { BackButton } from '../../components/BackButton'
 import { Car } from '../../components/Car'
 import { Load } from '../../components/Load'
 import { RentalDTO } from '../../dtos/RentalDTO'
-import { StackNavigationProps } from '../../routes/stack.routes.model'
 import { api } from '../../services/api'
 import {
   Container,
@@ -29,7 +28,7 @@ const UserRentals: React.FC = () => {
   const [rental, setRental] = useState<RentalDTO>({} as RentalDTO)
   const [loading, setLoading] = useState(true)
   const theme = useTheme()
-  const { goBack } = useNavigation<StackNavigationProps>()
+  const { goBack } = useNavigation()
 
   useEffect(() => {
     async function fetchUserRental(): Promise<void> {

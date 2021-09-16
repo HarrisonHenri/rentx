@@ -1,25 +1,17 @@
-import React, { createContext, useCallback, useContext, useState } from 'react'
+/* eslint no-param-reassign: "off", no-underscore-dangle: "off" */
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 
+import { database } from '../databases'
+import { User as UserModel } from '../databases/model/User'
+import { AuthResponse } from '../dtos/AuthResponseDTO'
+import { User } from '../dtos/UserDTO'
 import { api } from '../services/api'
-
-interface User {
-  id: string
-  email: string
-  name: string
-  driver_license: string
-  avatar: string
-}
-
-interface SessionsResponse {
-  token: string
-  user: User
-  refresh_token: string
-}
-
-interface AuthState {
-  token: string
-  user: User
-}
 
 interface SignInCredentials {
   email: string
@@ -35,25 +27,50 @@ interface AuthContextData {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 const AuthProvider: React.FC = ({ children }) => {
-  const [data, setData] = useState<AuthState>({} as AuthState)
+  const [data, setData] = useState<User>({} as User)
 
   const signIn = useCallback(async ({ email, password }: SignInCredentials) => {
-    const response = await api.post<SessionsResponse>('/sessions', {
+    const response = await api.post<AuthResponse>('/sessions', {
       email,
       password,
     })
-
-    const { token, user } = response.data
-
+    const { refresh_token, token, user } = response.data
     api.defaults.headers.Authorization = `Bearer ${token}`
 
-    setData({ token, user })
+    const userCollection = database.get<UserModel>('users')
+    await database.write(async () => {
+      await userCollection.create(newUser => {
+        newUser.user_id = user.id
+        newUser.name = user.name
+        newUser.token = token
+        newUser.refresh_token = refresh_token
+        newUser.email = user.email
+        newUser.driver_license = user.driver_license
+        newUser.avatar = user.avatar ?? ''
+      })
+    })
+
+    setData(user)
+  }, [])
+
+  useEffect(() => {
+    async function loadUserData(): Promise<void> {
+      const userCollection = database.get<UserModel>('users')
+      const response = await userCollection.query().fetch()
+
+      if (response.length) {
+        const user = response[0]._raw as unknown as UserModel
+        api.defaults.headers.Authorization = `Bearer ${user.token}`
+        setData(prevState => ({ ...prevState, user }))
+      }
+    }
+    loadUserData()
   }, [])
 
   const signOut = useCallback(async () => {}, [])
 
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
+    <AuthContext.Provider value={{ user: data, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   )

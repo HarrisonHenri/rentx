@@ -43,13 +43,14 @@ const SignIn: React.FC = () => {
       if (error instanceof Yup.ValidationError) {
         Alert.alert('Opa', error.message)
       } else {
+        console.log(error)
         Alert.alert(
           'Erro na autenticação',
           'Verifique os dados e tente novamente',
         )
       }
     }
-  }, [email, password])
+  }, [email, password, signIn])
 
   const handleSignUpNav = useCallback(() => {
     navigate('SignUpFirstStep')

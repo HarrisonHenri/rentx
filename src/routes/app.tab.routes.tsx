@@ -6,6 +6,8 @@ import { useTheme } from 'styled-components'
 
 import CarSvg from '../assets/car.svg'
 import HomeSvg from '../assets/home.svg'
+import PeopleSvg from '../assets/people.svg'
+import { Profile } from '../screens/Profile'
 import { UserRentals } from '../screens/UserRentals'
 import { AppStackRoutes } from './app.stack.routes'
 
@@ -43,6 +45,15 @@ const AppTabRoutes: React.FC = () => {
         options={{
           tabBarIcon: ({ color }) => (
             <CarSvg fill={color} width={24} height={24} />
+          ),
+        }}
+      />
+      <Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <PeopleSvg fill={color} width={24} height={24} />
           ),
         }}
       />

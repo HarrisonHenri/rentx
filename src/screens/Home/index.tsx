@@ -29,19 +29,27 @@ const Home: React.FC = () => {
   }, [navigate])
 
   useEffect(() => {
+    let isMounted = true
+
     async function fetchCars(): Promise<void> {
       try {
         const response = await api.get<CarDTO[]>('/cars/available')
 
-        setCars(response.data)
+        if (isMounted) {
+          setCars(response.data)
+        }
       } catch (error) {
         console.log(error)
       } finally {
-        setLoading(false)
+        if (isMounted) {
+          setLoading(false)
+        }
       }
     }
-
     fetchCars()
+    return () => {
+      isMounted = false
+    }
   }, [])
 
   return (
