@@ -3,7 +3,6 @@ export interface CarDTO {
   brand: string
   name: string
   daily_rate: number
-  thumbnail?: string
   description?: string
   specifications?: [{ id: string; name: string; description: string }]
   images: [{ id: string; image_name: string }]

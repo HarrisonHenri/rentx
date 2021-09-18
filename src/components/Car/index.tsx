@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useNetInfo } from '@react-native-community/netinfo'
 import { RectButtonProps } from 'react-native-gesture-handler'
 
 import { config } from '../../config/config'
@@ -22,6 +23,8 @@ interface Props extends RectButtonProps {
 }
 
 const Car: React.FC<Props> = ({ data, ...rest }) => {
+  const netInfo = useNetInfo()
+
   const motor =
     data.specifications?.find(
       specification =>
@@ -29,10 +32,11 @@ const Car: React.FC<Props> = ({ data, ...rest }) => {
         specification.description === 'gasoline_motor' ||
         specification.description === 'hybrid_motor',
     )?.description ?? 'eletric_motor'
-
   const MotorIcon = getAccessoryIcon(motor)
 
-  const thumbUri = `${config.API_URL}/${data.images[0].image_name}`
+  const thumbUri = data.images
+    ? `${config.API_URL}/${data.images[0].image_name}`
+    : ''
 
   return (
     <Container {...rest}>
@@ -42,7 +46,9 @@ const Car: React.FC<Props> = ({ data, ...rest }) => {
 
         <About>
           <Rent>
-            <Price>{`R$ ${data.daily_rate}`}</Price>
+            <Price>{`R$ ${
+              netInfo.isConnected ? data.daily_rate : '...'
+            }`}</Price>
           </Rent>
 
           <Type>

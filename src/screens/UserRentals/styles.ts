@@ -46,6 +46,14 @@ export const RentalsTitle = styled.Text`
   padding: 24px 0;
 `
 
+export const NoRentalsText = styled.Text`
+  color: ${({ theme }) => theme.colors.additionalColors.shape.dark};
+  font-family: ${({ theme }) => theme.fonts.secondary[600]};
+  font-size: ${RFValue(24)}px;
+  text-align: center;
+  margin-top: 40px;
+`
+
 export const CarFooter = styled.View`
   width: 100%;
   padding: 12px;

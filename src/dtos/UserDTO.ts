@@ -4,4 +4,7 @@ export interface User {
   name: string
   driver_license: string
   avatar: string
+  token: string
+  refresh_token: string
+  user_id: string
 }

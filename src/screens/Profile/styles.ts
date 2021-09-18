@@ -79,7 +79,7 @@ export const Options = styled.View`
   flex-direction: row;
   justify-content: space-around;
 
-  margin-bottom: 24px;
+  margin-bottom: 8px;
 `
 
 interface OptionProps {

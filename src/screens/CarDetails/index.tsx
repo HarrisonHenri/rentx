@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { StatusBar, StyleSheet } from 'react-native'
 
+import { useNetInfo } from '@react-native-community/netinfo'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 import Animated, {
@@ -35,16 +36,21 @@ import {
   About,
   Accessories,
   Footer,
+  OfflineInfo,
 } from './styles'
 
 const CarDetails: React.FC = () => {
   const { navigate, goBack } = useNavigation<StackNavigationProps>()
   const route = useRoute<RootParams<'CarDetails'>>()
+  const theme = useTheme()
   const { car } = route.params
+
+  const netInfo = useNetInfo()
+
   const carImages = car.images.map(
     ({ image_name }) => `${config.API_URL}/${image_name}`,
   )
-  const theme = useTheme()
+
   const scrollY = useSharedValue(0)
   const scrollHandler = useAnimatedScrollHandler(event => {
     scrollY.value = event.contentOffset.y
@@ -87,7 +93,9 @@ const CarDetails: React.FC = () => {
 
         <Animated.View style={[sliderCarsStyleAnimation]}>
           <CarImages>
-            <ImageSlider imagesUrl={carImages} />
+            <ImageSlider
+              imagesUrl={netInfo.isConnected ? carImages : [carImages[0]]}
+            />
           </CarImages>
         </Animated.View>
       </Animated.View>
@@ -108,24 +116,38 @@ const CarDetails: React.FC = () => {
           </Description>
 
           <Rent>
-            <Price>{`R$ ${car.daily_rate}`}</Price>
+            <Price>{`R$ ${
+              netInfo.isConnected ? car.daily_rate : '...'
+            }`}</Price>
           </Rent>
         </Details>
 
-        <Accessories>
-          {car?.specifications?.map(({ id, name, description }) => (
-            <Accessory
-              key={id}
-              name={name}
-              icon={getAccessoryIcon(description)}
-            />
-          ))}
-        </Accessories>
+        {netInfo.isConnected ? (
+          <Accessories>
+            {car?.specifications?.map(({ id, name, description }) => (
+              <Accessory
+                key={id}
+                name={name}
+                icon={getAccessoryIcon(description)}
+              />
+            ))}
+          </Accessories>
+        ) : null}
 
         <About>{car.description}</About>
       </Animated.ScrollView>
       <Footer>
-        <Button title="Agende seu aluguel" onPress={handleRentalNav} />
+        <Button
+          title="Agende seu aluguel"
+          onPress={handleRentalNav}
+          enabled={Boolean(netInfo.isConnected)}
+        />
+
+        {netInfo.isConnected === false && (
+          <OfflineInfo>
+            Conecte-se a Internet para ver mais detalhes e agendar seu carro.
+          </OfflineInfo>
+        )}
       </Footer>
     </Container>
   )

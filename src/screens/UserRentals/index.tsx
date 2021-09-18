@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { StatusBar, View } from 'react-native'
 
 import { AntDesign } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { format } from 'date-fns'
 import { useTheme } from 'styled-components'
 
@@ -22,12 +22,14 @@ import {
   CarFooterTitle,
   CarFooterPeriod,
   CarFooterDate,
+  NoRentalsText,
 } from './styles'
 
 const UserRentals: React.FC = () => {
   const [rental, setRental] = useState<RentalDTO>({} as RentalDTO)
   const [loading, setLoading] = useState(true)
   const theme = useTheme()
+  const userIsFocused = useIsFocused()
   const { goBack } = useNavigation()
 
   useEffect(() => {
@@ -35,7 +37,7 @@ const UserRentals: React.FC = () => {
       try {
         const response = await api.get<RentalDTO[]>('/rentals/user')
 
-        setRental(response.data[0])
+        setRental(response.data[0] ?? ({} as RentalDTO))
       } catch (error) {
         console.log(error)
       } finally {
@@ -44,7 +46,7 @@ const UserRentals: React.FC = () => {
     }
 
     fetchUserRental()
-  }, [])
+  }, [userIsFocused])
 
   const handleGoBack = useCallback(() => {
     goBack()
@@ -72,9 +74,8 @@ const UserRentals: React.FC = () => {
 
       <Content>
         <RentalsTitle>Aluguel corrente</RentalsTitle>
-        {loading ? (
-          <Load />
-        ) : (
+        {loading && <Load />}
+        {!loading && rental && rental.car && (
           <View>
             <Car data={rental.car} />
             <CarFooter>
@@ -95,6 +96,9 @@ const UserRentals: React.FC = () => {
               </CarFooterPeriod>
             </CarFooter>
           </View>
+        )}
+        {!loading && !rental.car && (
+          <NoRentalsText>Sem alugueis por aqui 😥.</NoRentalsText>
         )}
       </Content>
     </Container>
